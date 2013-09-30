@@ -14,7 +14,7 @@ var mySprite = {
 
 	x: 200, // x and y dictate the coordinates (200,200)
 	y: 200,
-	width: 64, // Hight and width of the square (50,50)
+	width: 64, // Hight and width of pacman (64,64)
 	height: 64,
 	speed: 200, // The speed of the square (200 pixels per second)
 	state: 0
