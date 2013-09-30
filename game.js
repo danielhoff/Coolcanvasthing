@@ -52,6 +52,12 @@ pacmanTiles.image.src = 'pacman.png';
 
 // -----------------------------------------------------------------------
 
+// Variable for a counter
+
+var itemCounter = 0;
+
+// -------------------------------------------------------
+
 // Checking for keyboard input
 
 var keysDown = {}; // stores which keys are pressed
@@ -104,6 +110,10 @@ function update (mod) { // dictating movement depending on which key is pressed 
 
 		item.x = Math.random() * canvas.width; // when the sprite collides with the item the item then moves to another random point on the canvas
 		item.y = Math.random() * canvas.height;
+
+		itemCounter ++; // impliments the counter whenever the item collides with pacman
+
+		
 	}
 
 }
@@ -135,6 +145,11 @@ function render () { // Drawing
 	ctx.fillStyle = item.color; // sets color to the one defined in the item variable
 	ctx.fillRect(item.x, item.y, item.width, item.height); // draws the item on the canvas at a random point
 
+	// Drawing the Counter 
+	ctx.font = '12pt Arial';
+	ctx.fillStyle = '#fff';
+	ctx.textBaseline = 'top';
+	ctx.fillText(itemCounter, 10, 10); // positioning the counter
 }
 
 function run () { // Calls both the update & render functions. Calculate the 'mod' paramater in the update function
