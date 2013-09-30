@@ -8,16 +8,16 @@ canvas.height = "600";
 
 // -----------------------------------
 
-// Making the sprite (A red square)
+// Making the sprite ()
 
 var mySprite = {
 
 	x: 200, // x and y dictate the coordinates (200,200)
 	y: 200,
-	width: 50, // Hight and width of the square (50,50)
-	height: 50,
+	width: 64, // Hight and width of the square (50,50)
+	height: 64,
 	speed: 200, // The speed of the square (200 pixels per second)
-	color: '#c00' 
+	state: 0
 };
 
 // ------------------------------------
@@ -33,6 +33,24 @@ var item = {
 };
 
 // -----------------------------------------
+
+// Making Pac-Man! 
+
+var pacmanTiles = {
+
+	loaded: false,
+	image: new Image(),
+	tileWidth: 64,
+	tileHeight: 64
+};
+
+pacmanTiles.image.onload = function() { // makes sure the image is drawn AFTER it has loaded
+	pacmanTiles.loaded = true;
+}
+
+pacmanTiles.image.src = 'pacman.png';
+
+// -----------------------------------------------------------------------
 
 // Checking for keyboard input
 
@@ -54,21 +72,25 @@ window.addEventListener('keyup', function(e) { // Event listener for key being r
 function update (mod) { // dictating movement depending on which key is pressed & update coordinates
 	
 	if (37 in keysDown) { // left
+		mySprite.state = 2; // dictates which image to draw depending on the direction
 		mySprite.x -= mySprite.speed * mod;
 	};
 
 
 	if (38 in keysDown) { // up 
+		mySprite.state = 3;
 		mySprite.y -= mySprite.speed * mod;
 	};
 
 
 	if (39 in keysDown) { // right
+		mySprite.state = 0;
 		mySprite.x += mySprite.speed * mod;
 	};
 	
 
 	if (40 in keysDown) { // down
+		mySprite.state = 1;
 		mySprite.y += mySprite.speed * mod;
 	};
 
@@ -93,9 +115,21 @@ function render () { // Drawing
 	ctx.fillStyle = '#000'; // Sets color to black
 	ctx.fillRect(0, 0, canvas.width, canvas.height); // draws a rectangle starting from coordinates 0, 0. Sets a hight and width the same as the canvas
 
-	// Drawing the red sqaure (mySprite)
-	ctx.fillStyle = mySprite.color; // sets color to the one defined in the mySprite variable
-	ctx.fillRect(mySprite.x, mySprite.y, mySprite.width, mySprite.height); // draws the sprite on the canvas using the values found in the mySprite variable
+	// Drawing the pacman (pacmanTiles)
+	if (pacmanTiles.loaded) {
+		ctx.drawImage (
+
+			pacmanTiles.image, // image
+			mySprite.state * pacmanTiles.tileWidth, //source x (pacman images are one part of one big image, need to determine which section of the image to use)
+			0, // source y
+			mySprite.width, // tile width 
+			mySprite.height, // tile height
+			Math.round(mySprite.x), // destination x. Math.round stops the canvas drawing on a decimal point, keeping the image as clear as possible
+			Math.round(mySprite.y), // destination y
+			mySprite.width, // destination width
+			mySprite.height	// destination hight
+			);
+	}
 
 	//Drawing the collectable (item)
 	ctx.fillStyle = item.color; // sets color to the one defined in the item variable
